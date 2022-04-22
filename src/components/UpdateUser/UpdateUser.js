@@ -43,7 +43,7 @@ const UpdateUser = () => {
                 <br />
                 <input type="email" name="email" placeholder='Email' required />
                 <br />
-                <input type="submit" value="Update User" />
+                <input type="submit" value="Update User"/>
             </form>
         </div>
     );
