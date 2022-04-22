@@ -39,6 +39,7 @@ const UpdateUser = () => {
         <div>
             <h2>Updating User: {user.name}</h2>
             <form onSubmit={handleUpdateUser}>
+                {/* BUG */}
                 <input type="text" name="name" placeholder='Name' required />
                 <br />
                 <input type="email" name="email" placeholder='Email' required />
