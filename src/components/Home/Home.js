@@ -1,36 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-    const handleAddUser = event =>{
-        event.preventDefault();
-        const name = event.target.name.value;
-        const email = event.target.email.value;
+    const [users, setUsers] = useState([]);
+    useEffect( () =>{
+        fetch('http://localhost:5000/user')
+        .then(res => res.json())
+        .then(data => setUsers(data));
+    }, []);
 
-        const user = {name,email};
-
-        // send data to the SERVER
-        fetch('http://localhost:5000/user', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify(user),
-        })
-        .then(response => response.json())
-        .then(data=>{
-            console.log('Success:',data);
-        })
+    const handleUserDelete = id =>{
+        const proceed = window.confirm('Are you sure you want to delete?');
+        if(proceed){
+            console.log('deleting user with id, ', id);
+            const url = `http://localhost:5000/user/${id}`;
+            fetch(url, {
+                method: 'DELETE'
+            })
+            .then(res => res.json())
+            .then(data =>{
+                if(data.deletedCount > 0){
+                    console.log('deleted');
+                    const remaining = users.filter(user => user._id !== id);
+                    setUsers(remaining);
+                }
+            })
+        }
     }
     return (
         <div>
-            <h2>Please add a new user</h2>
-            <form onSubmit={handleAddUser}>
-                <input type="text" name='name' placeholder='Name' required />
-                <br />
-                <input type="email" name='email' placeholder='Email address' required />
-                <br />
-                <input type="submit" value="Add user" />
-            </form>
+            <h2>Available Users: {users.length}</h2>
+            <ul>
+                {
+                    users.map(user => <li
+                    key={user._id}
+                    >{user.name}:: {user.email}
+                    <Link to={`/update/${user._id}`}><button>Update</button></Link>
+                    <button onClick={() => handleUserDelete(user._id)}>X</button>
+                    </li>)
+                }
+            </ul>
         </div>
     );
 };
