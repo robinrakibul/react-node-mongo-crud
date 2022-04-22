@@ -10,6 +10,7 @@ function App() {
       <Route path="user/add" element={<AddUser></AddUser>}></Route>
       <Route path="user/add" element={<Home></Home>}></Route>
     </Routes>
+    <Home></Home>
     </div>
   );
 }

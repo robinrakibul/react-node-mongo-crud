@@ -6,7 +6,20 @@ const Home = () => {
         const name = event.target.name.value;
         const email = event.target.email.value;
 
-        const user = {name,email}
+        const user = {name,email};
+
+        // send data to the SERVER
+        fetch('http://localhost:5000/user', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user),
+        })
+        .then(response => response.json())
+        .then(data=>{
+            console.log('Success:',data);
+        })
     }
     return (
         <div>
